@@ -1,5 +1,6 @@
 'use strict';
 const assert = require('assert');
+const { threadId } = require('worker_threads');
 
 // This is an object that has types of jobs and the values each provide.
 const jobTypes = {
@@ -10,7 +11,7 @@ const jobTypes = {
 };
 
 // Your code will go here
-class crewMember {
+class CrewMember {
   constructor(name, job, specialSkill, ship) {
     this.name = name
     this.job = job
@@ -30,6 +31,17 @@ class Ship {
     this.ability = ability
     this.crew = []
   }
+  missionStatement() {
+    // make sure crew members in ship
+    if (this.crew.length === 0) {
+      return "Can't perform a mission yet."
+    } else if (this.crew.length > 0) {
+      return this.ability
+    }
+    // crew members are present can return the ships ability for mission statement
+
+    // if crew members not present theres no ability
+  }
 }
 
 
@@ -43,7 +55,7 @@ if (typeof describe === 'function'){
     it('should have a name, a job, a specialSkill and ship upon instantiation', function(){
       // this creates a CrewMember and passes the following arguments into its constructor:
       // 'Rick Martinez', 'pilot', 'chemistry'
-      const crewMember1 = new crewMember('Rick Martinez', 'pilot', 'chemistry');
+      const crewMember1 = new CrewMember('Rick Martinez', 'pilot', 'chemistry');
       assert.equal(crewMember1.name, 'Rick Martinez');
       assert.equal(crewMember1.job, 'pilot');
       assert.equal(crewMember1.specialSkill, 'chemistry');
@@ -53,7 +65,7 @@ if (typeof describe === 'function'){
     it('can enter a ship', function(){
       // this creates a new Ship. Can you build a class that can be called so that this Ship can be built?
       let mav = new Ship('Mars Ascent Vehicle', 'MAV', 'Ascend into low orbit');
-      const crewMember1 = new crewMember('Rick Martinez', 'pilot', 'chemistry');
+      const crewMember1 = new CrewMember('Rick Martinez', 'pilot', 'chemistry');
       crewMember1.enterShip(mav);
       assert.equal(crewMember1.ship, mav);
       assert.equal(mav.crew.length, 1);
@@ -72,7 +84,7 @@ if (typeof describe === 'function'){
 
     it('can return a mission statement correctly', function(){
       let mav = new Ship('Mars Ascent Vehicle', 'MAV', 'Ascend into low orbit');
-      const crewMember1 = new crewMember('Rick Martinez', 'pilot', 'chemistry');
+      const crewMember1 = new CrewMember('Rick Martinez', 'pilot', 'chemistry');
       let hermes = new Ship('Hermes', 'Main Ship', 'Interplanetary Space Travel');
       const crewMember2 = new CrewMember('Commander Lewis', 'commander', 'geology');
       assert.equal(mav.missionStatement(), "Can't perform a mission yet.");
